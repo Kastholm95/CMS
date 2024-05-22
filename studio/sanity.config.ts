@@ -25,10 +25,10 @@ import { imageShopAsset } from '@imageshop-org/sanity-plugin-asset-source-images
 export default defineConfig({
   basePath: '/studio',
   theme,
-  name: 'default',
-  title: 'Pengehjørnet',
+  name: process.env.SANITY_STUDIO_TITLE,
+  title: process.env.SANITY_STUDIO_TITLE,
   icon: logo,
-  projectId: 'ikbzpczn',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID,
   dataset: 'production',
 
   plugins: [structureTool({
