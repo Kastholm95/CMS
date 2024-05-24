@@ -21,6 +21,12 @@ export default {
             description: 'Upload dit logo her. Logoet bruges som identifikation af dit website og vises i navigationsmenuen.',
         }),
         defineField({
+            name: 'logoDark',
+            title: 'Logo til Dark Mode',
+            type: 'image',
+            description: 'Upload dit logo til Dark Mode her. Logoet bruges som identifikation af dit website og vises i navigationsmenuen, når brugeren har aktiveret Dark Mode.',
+        }),
+        defineField({
             name: 'navItems',
             title: 'Menupunkter',
             type: 'array',
