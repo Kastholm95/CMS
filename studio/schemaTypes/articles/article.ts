@@ -88,8 +88,31 @@ export default defineType({
       description: 'Tilføj en disclaimer til artiklen',
       initialValue: true,
     }),
-    // Facebook opengraph fields
     defineField({
+      name: 'isPublished',
+      title: 'publiceret',
+      type: 'number',
+      initialValue: 0,
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
+      name: 'changePublishDate',
+      title: 'Skift artiklens publiceringsdato',
+      type: 'boolean',
+      description: 'Publiceringsdatoen sættes automatisk til artiklens første publicering',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'publishedAt',
+      title: 'Første publicering',
+      type: 'datetime',
+      description: 'Dato for første publicering',
+      initialValue: new Date().toISOString(),
+      hidden: ({document}) => !document?.changePublishDate,
+    })
+    // Facebook opengraph fields
+    /* defineField({
       name: 'facebookFields',
       title: 'Rediger Opengraph Facebook - (Valgfrit)',
       type: 'boolean',
@@ -112,9 +135,9 @@ export default defineType({
       description:
         'Ændrer Meta beskrivelsen, efterlad tom for at bruge standard teaser fra artiklen. (Anbefalet)',
       hidden: ({document}) => !document?.facebookFields,
-    }),
+    }), */
     //Twitter opengraph fields
-    defineField({
+    /* defineField({
       name: 'twitterFields',
       title: 'Rediger Twitter/X - (Valgfrit)',
       type: 'boolean',
@@ -137,7 +160,7 @@ export default defineType({
       description:
         'Ændrer Meta beskrivelsen, efterlad tom for at bruge standard teaser fra artiklen. (Anbefalet)',
       hidden: ({document}) => !document?.twitterFields,
-    }),
+    }), */
   ],
   preview: {
     select: {

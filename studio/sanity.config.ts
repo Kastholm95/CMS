@@ -14,6 +14,7 @@ import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import { unsplashAssetSource } from 'sanity-plugin-asset-source-unsplash'
 import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels'
 import { presentationTool } from 'sanity/presentation'
+import {SetAndPublishAction} from './components/actions'
 
 /* const {theme} = (await import(
   // @ts-expect-error -- TODO setup themer.d.ts to get correct typings
@@ -33,7 +34,7 @@ export default defineConfig({
 
   plugins: [structureTool({
     structure: myStructure, defaultDocumentNode: defaultDocumentNodeResolver,
-  }), visionTool(), media(), assist(), scheduledPublishing(), daDKLocale(), unsplashImageAsset(), pexelsImageAsset({
+  }), visionTool(), media(), assist(), daDKLocale(), unsplashImageAsset(), pexelsImageAsset({
     API_KEY: 'ge1IUYa6cLyoBaDAXthpkVhf0UVm9ydomVM7DnSjnSkM4CAHT9EVbRd6',
   }), /* , imageShopAsset({}) */
   /* presentationTool({
@@ -51,6 +52,17 @@ export default defineConfig({
       directUploads: true,
     },
   }, */
+  /* document: {
+    actions: (prev, context) => {
+      return context.schemaType === 'article' ? [HelloWorldAction, ...prev] : prev;
+    },
+  }, */
+  document: {
+    actions: (prev) =>
+      prev.map((originalAction) =>
+        originalAction.action === 'publish' ? SetAndPublishAction : originalAction
+      ),
+  },
 
   schema: {
     types: [...schemaTypes, imageType],
