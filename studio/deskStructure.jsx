@@ -31,10 +31,14 @@ export const myStructure = (S) =>
   S.list()
     .title('Dokumenter')
     .items([
-      S.listItem({icon: article}).title('Alle Artikler').child(
-        /* Create a list of all posts */
-        S.documentList().title('Alle Artikler').filter('_type == "article"'),
+      S.listItem({icon: article})
+      .title('Alle Artikler')
+      .child(
+        S.documentTypeList('article').title('Alle Artikler').filter('_type == "article"'),
       ),
+      
+    
+
       S.listItem({icon: article})
         .title('Filtrer Artikler')
         .child(
@@ -44,10 +48,9 @@ export const myStructure = (S) =>
               S.listItem({icon: analytics})
               .title('Side Visninger')
               .child(
-                S.documentList()
-                  .title('Artikler efter sidevisninger')
-                  .filter('_type == "article" && views >= $views')
-                  .params({views: 0})
+                S.documentTypeList('article')
+                .title('Artikler efter sidevisninger')
+                .filter('_type == "article"')
               ),
               S.listItem({icon: hashtagg})
                 .title('Kategori')

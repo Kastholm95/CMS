@@ -1,6 +1,5 @@
 import {defineField, defineType} from 'sanity'
 import {IoNewspaperOutline as icon} from 'react-icons/io5'
-import { FaRegEye as view } from "react-icons/fa";
 
 /* import CustomEditor from '../wordCount/CustomEditor' */
 export default defineType({
@@ -110,57 +109,23 @@ export default defineType({
       description: 'Dato for første publicering',
       initialValue: new Date().toISOString(),
       hidden: ({document}) => !document?.changePublishDate,
-    })
-    // Facebook opengraph fields
-    /* defineField({
-      name: 'facebookFields',
-      title: 'Rediger Opengraph Facebook - (Valgfrit)',
-      type: 'boolean',
-      description:
-        'Hvis ikke redigeret, bruges standard dataen fra artiklen. Heriblandt titel, teaser, billede og kilde. (Anbefalet)',
-      initialValue: false,
     }),
-    defineField({
-      name: 'facebookTitle',
-      title: 'Ændre titel på Facebook opslag - (Valgfrit)',
-      type: 'string',
-      description:
-        'Ændrer Meta titlen, efterlad tom for at bruge standard titlen fra artiklen. (Anbefalet)',
-      hidden: ({document}) => !document?.facebookFields,
-    }),
-    defineField({
-      name: 'facebookDescription',
-      title: 'Ændre teaser på Facebook opslag - (Valgfrit)',
-      type: 'blockContent',
-      description:
-        'Ændrer Meta beskrivelsen, efterlad tom for at bruge standard teaser fra artiklen. (Anbefalet)',
-      hidden: ({document}) => !document?.facebookFields,
-    }), */
-    //Twitter opengraph fields
-    /* defineField({
-      name: 'twitterFields',
-      title: 'Rediger Twitter/X - (Valgfrit)',
-      type: 'boolean',
-      description:
-        'Hvis ikke redigeret, bruges standard dataen fra artiklen. Heriblandt titel, teaser, billede og kilde. (Anbefalet)',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'twitterTitle',
-      title: 'Ændre titel på Twitter opslag - (Valgfrit)',
-      type: 'string',
-      description:
-        'Ændrer Meta titlen, efterlad tom for at bruge standard titlen fra artiklen. (Anbefalet)',
-      hidden: ({document}) => !document?.twitterFields,
-    }),
-    defineField({
-      name: 'twitterDescription',
-      title: 'Ændre teaser på Twitter opslag - (Valgfrit)',
-      type: 'blockContent',
-      description:
-        'Ændrer Meta beskrivelsen, efterlad tom for at bruge standard teaser fra artiklen. (Anbefalet)',
-      hidden: ({document}) => !document?.twitterFields,
-    }), */
+  ],
+  orderings: [
+    {
+      title: 'Mest besøgte',
+      name: 'viewsDesc',
+      by: [
+        {field: 'views', direction: 'desc'}
+      ]
+    },
+    {
+      title: 'Mindst besøgte',
+      name: 'viewsAsc',
+      by: [
+        {field: 'views', direction: 'asc'}
+      ]
+    }
   ],
   preview: {
     select: {
@@ -175,11 +140,12 @@ export default defineType({
     },
     prepare(selection) {
       const {title, views, journalistName, category, content} = selection;
-      const characterCount = calculateCharacterCount(content); // Call calculate function
+      const characterCount = calculateCharacterCount(content);
+      const wordCount = calculateWordCount(content);
       
       return {
         title: `${title}`,
-        subtitle: `Views: ${views} | Tegn: ${characterCount} | ${category} | ${journalistName}`,
+        subtitle: `${views}👀| ${wordCount}📝| ${journalistName}`,
         media: selection.media,
       }
     },
@@ -190,6 +156,15 @@ function calculateCharacterCount(blocks: any) {
   return blocks.reduce((total: any, block: any) => {
     if (block._type === 'block' && block.children) {
       return total + block.children.reduce((acc, child) => acc + (child.text ? child.text.length : 0), 0);
+    }
+    return total;
+  }, 0);
+}
+function calculateWordCount(blocks: any) {
+  if (!blocks) return 0;
+  return blocks.reduce((total: any, block: any) => {
+    if (block._type === 'block' && block.children) {
+      return total + block.children.reduce((acc, child) => acc + (child.text ? child.text.split(/\s+/).filter(Boolean).length : 0), 0);
     }
     return total;
   }, 0);

@@ -105,5 +105,5 @@ export default defineType({
       description: 'Ændrer Meta beskrivelsen, efterlad tom for at bruge standard teaser fra artiklen. (Anbefalet)',
       hidden: ({ document }) => !document?.twitterFields,
     }),
-  ]
+  ],
 });
