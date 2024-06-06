@@ -113,6 +113,13 @@ export default defineType({
   ],
   orderings: [
     {
+      title: 'Sidst Publiceret',
+      name: 'publiceretDesc',
+      by: [
+        {field: 'publishedAt', direction: 'asc'}
+      ]
+    },
+    {
       title: 'Mest besøgte',
       name: 'viewsDesc',
       by: [

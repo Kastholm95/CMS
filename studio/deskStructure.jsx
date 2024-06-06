@@ -45,20 +45,13 @@ export const myStructure = (S) =>
           S.list()
             .title('Filters')
             .items([
-              S.listItem({icon: analytics})
-              .title('Side Visninger')
-              .child(
-                S.documentTypeList('article')
-                .title('Artikler efter sidevisninger')
-                .filter('_type == "article"')
-              ),
               S.listItem({icon: hashtagg})
                 .title('Kategori')
                 .child(
                   S.documentTypeList('category')
                     .title('Artikler i kategori')
                     .child((categoryId) =>
-                      S.documentList()
+                      S.documentTypeList('article')
                         .title('Artikler')
                         .filter('_type == "article" && $categoryId == details.category._ref')
                         .params({categoryId}),
@@ -70,9 +63,9 @@ export const myStructure = (S) =>
                   S.documentTypeList('tag')
                     .title('Artikler med tag')
                     .child((tagId) =>
-                      S.documentList()
+                      S.documentTypeList('article')
                         .title('Artikler')
-                        .filter('_type == "article" && $tagId in details.tag[]._ref')
+                        .filter('_type == "article" && $tagId in details.tag[0]._ref')
                         .params({tagId}),
                     ),
                 ),
@@ -82,7 +75,7 @@ export const myStructure = (S) =>
                   S.documentTypeList('journalist')
                     .title('Artikler af journalist')
                     .child((authorId) =>
-                      S.documentList()
+                      S.documentTypeList('article')
                         .title('Artikler')
                         .filter('_type == "article" && $authorId == details.journalist._ref')
                         .params({authorId}),
