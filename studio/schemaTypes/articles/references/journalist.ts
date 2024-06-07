@@ -32,7 +32,7 @@ export default defineType({
                validation: (Rule) => Rule.required().custom(slug => {
                     if (!slug) return true; // Tillader tomme slugs, da der allerede er en 'required' regel
                     const regex = /^[a-z0-9\-]+$/; // Tillader kun små bogstaver, tal og bindestreger
-                    if (regex.test(slug.current)) {
+                    if (slug.current && regex.test(slug.current)) { // Check if slug.current is defined before testing
                          return true;
                     } else {
                          return 'Slug må kun indeholde små bogstaver, tal og bindestreger.';

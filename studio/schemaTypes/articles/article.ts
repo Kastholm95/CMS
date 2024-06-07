@@ -113,14 +113,21 @@ export default defineType({
   ],
   orderings: [
     {
-      title: 'Mest besøgte',
+      title: '| Sidst publiceret',
+      name: 'publiceretDesc',
+      by: [
+        {field: 'publishedAt', direction: 'desc'}
+      ]
+    },
+    {
+      title: '| Fleste visninger',
       name: 'viewsDesc',
       by: [
         {field: 'views', direction: 'desc'}
       ]
     },
     {
-      title: 'Mindst besøgte',
+      title: '| Færreste visninger',
       name: 'viewsAsc',
       by: [
         {field: 'views', direction: 'asc'}
@@ -155,7 +162,7 @@ function calculateCharacterCount(blocks: any) {
   if (!blocks) return 0;
   return blocks.reduce((total: any, block: any) => {
     if (block._type === 'block' && block.children) {
-      return total + block.children.reduce((acc, child) => acc + (child.text ? child.text.length : 0), 0);
+      return total + block.children.reduce((acc: any, child: any) => acc + (child.text ? child.text.length : 0), 0);
     }
     return total;
   }, 0);
@@ -164,7 +171,7 @@ function calculateWordCount(blocks: any) {
   if (!blocks) return 0;
   return blocks.reduce((total: any, block: any) => {
     if (block._type === 'block' && block.children) {
-      return total + block.children.reduce((acc, child) => acc + (child.text ? child.text.split(/\s+/).filter(Boolean).length : 0), 0);
+      return total + block.children.reduce((acc: any, child: any) => acc + (child.text ? child.text.split(/\s+/).filter(Boolean).length : 0), 0);
     }
     return total;
   }, 0);

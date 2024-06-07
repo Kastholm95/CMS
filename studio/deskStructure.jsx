@@ -7,9 +7,10 @@ import {BsCookie as cookie} from 'react-icons/bs'
 import {MdPrivacyTip as privacy} from 'react-icons/md'
 import {CiHashtag as hashtagg} from 'react-icons/ci'
 import {GrCircleInformation as info} from 'react-icons/gr'
-import { SiPagespeedinsights as analytics } from "react-icons/si";
-import { TbLayoutNavbarCollapseFilled as nav } from "react-icons/tb";
-import { TbLayoutNavbarExpandFilled as footer } from "react-icons/tb"
+import {MdOutlineUnpublished as unpub} from 'react-icons/md'
+import {SiPagespeedinsights as analytics} from 'react-icons/si'
+import {TbLayoutNavbarCollapseFilled as nav} from 'react-icons/tb'
+import {TbLayoutNavbarExpandFilled as footer} from 'react-icons/tb'
 // ./deskStructure.js
 const JsonPreview = ({document}) => (
   <>
@@ -32,33 +33,30 @@ export const myStructure = (S) =>
     .title('Dokumenter')
     .items([
       S.listItem({icon: article})
-      .title('Alle Artikler')
-      .child(
-        S.documentTypeList('article').title('Alle Artikler').filter('_type == "article"'),
-      ),
-      
-    
-
+        .title('Alle Artikler')
+        .child(S.documentTypeList('article').title('Alle Artikler').filter('_type == "article"')),
       S.listItem({icon: article})
         .title('Filtrer Artikler')
         .child(
           S.list()
             .title('Filters')
             .items([
-              S.listItem({icon: analytics})
-              .title('Side Visninger')
-              .child(
-                S.documentTypeList('article')
-                .title('Artikler efter sidevisninger')
-                .filter('_type == "article"')
-              ),
+              S.listItem({icon: unpub})
+                .title('Ikke-Publiceret Indhold')
+                .child(
+                  S.documentTypeList('article')
+                    .title('Ikke publiceret')
+                    .filter(
+                      '_type == "article" && !defined(publishedAt) || isPublished == 0 || _id in path("drafts.**")',
+                    ),
+                ),
               S.listItem({icon: hashtagg})
                 .title('Kategori')
                 .child(
                   S.documentTypeList('category')
                     .title('Artikler i kategori')
                     .child((categoryId) =>
-                      S.documentList()
+                      S.documentTypeList('article')
                         .title('Artikler')
                         .filter('_type == "article" && $categoryId == details.category._ref')
                         .params({categoryId}),
@@ -70,7 +68,7 @@ export const myStructure = (S) =>
                   S.documentTypeList('tag')
                     .title('Artikler med tag')
                     .child((tagId) =>
-                      S.documentList()
+                      S.documentTypeList('article')
                         .title('Artikler')
                         .filter('_type == "article" && $tagId in details.tag[]._ref')
                         .params({tagId}),
@@ -82,7 +80,7 @@ export const myStructure = (S) =>
                   S.documentTypeList('journalist')
                     .title('Artikler af journalist')
                     .child((authorId) =>
-                      S.documentList()
+                      S.documentTypeList('article')
                         .title('Artikler')
                         .filter('_type == "article" && $authorId == details.journalist._ref')
                         .params({authorId}),
@@ -107,7 +105,7 @@ export const myStructure = (S) =>
             'aboutUs',
             'media.tag',
             'assist.instruction.context',
-            'footer'
+            'footer',
           ].includes(listItem.getId()),
       ),
       S.listItem({icon: hashtag})
@@ -134,7 +132,7 @@ export const myStructure = (S) =>
               S.listItem({icon: nav})
                 .title('Navigations Menu')
                 .child(S.document().schemaType('navigation').documentId('navigation')),
-                S.listItem({icon: footer})
+              S.listItem({icon: footer})
                 .title('Footer')
                 .child(S.document().schemaType('footer').documentId('footer')),
               S.divider(),
