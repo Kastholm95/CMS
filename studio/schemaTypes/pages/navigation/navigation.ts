@@ -31,7 +31,7 @@ export default {
             title: 'Menupunkter',
             type: 'array',
             description: 'Administrer menupunkterne i navigationsmenuen. Her kan du tilføje, redigere, eller fjerne sider, der skal vises som links i navigationsbaren på dit website. Dette er afgørende for at sikre en brugervenlig og effektiv navigation for brugere.',
-            of: [{ type: 'reference', to: [{ type: 'category'}, { type: 'tag'}, {type: 'subPage'},  { type: 'aboutUs'}, {type: 'contactUs'}, {type: 'privacyPolicy'}, {type: 'cookiePolicy'} ] }],
+            of: [{ type: 'reference', to: [{ type: 'category'} ] }],
             validation: (Rule) => Rule.required().min(3).max(6).error('Der skal være mindst 3 menupunkter og maksimalt 7 for optimal brugervenlighed og strukturering af indholdet.'),
         }),
         defineField({
