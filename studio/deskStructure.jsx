@@ -11,6 +11,7 @@ import {MdOutlineUnpublished as unpub} from 'react-icons/md'
 import {SiPagespeedinsights as analytics} from 'react-icons/si'
 import {TbLayoutNavbarCollapseFilled as nav} from 'react-icons/tb'
 import {TbLayoutNavbarExpandFilled as footer} from 'react-icons/tb'
+import { MdOutlineFindInPage as page } from "react-icons/md";
 // ./deskStructure.js
 const JsonPreview = ({document}) => (
   <>
@@ -74,7 +75,7 @@ export const myStructure = (S) =>
                         .params({tagId}),
                     ),
                 ),
-              S.listItem({icon: about})
+              /* S.listItem({icon: about})
                 .title('Journalist')
                 .child(
                   S.documentTypeList('journalist')
@@ -85,7 +86,7 @@ export const myStructure = (S) =>
                         .filter('_type == "article" && $authorId == details.journalist._ref')
                         .params({authorId}),
                     ),
-                ),
+                ), */
             ]),
         ),
       S.divider(),
@@ -97,6 +98,7 @@ export const myStructure = (S) =>
             'navigation',
             'colors',
             'tag',
+            'journalist',
             'category',
             'article',
             'cookiePolicy',
@@ -106,6 +108,7 @@ export const myStructure = (S) =>
             'media.tag',
             'assist.instruction.context',
             'footer',
+            'subPage'
           ].includes(listItem.getId()),
       ),
       S.listItem({icon: hashtag})
@@ -120,11 +123,13 @@ export const myStructure = (S) =>
               S.listItem({icon: hashtagg})
                 .title('Tags')
                 .child(S.documentTypeList('tag').title('Tags')),
+                S.listItem({icon: about})
+                .title('Journalister')
+                .child(S.documentTypeList('journalist').title('Journalister')),
             ]),
         ),
-      S.divider(),
       S.listItem()
-        .title('Info & Undersider')
+        .title('Hovedelementer')
         .child(
           S.list({icon: pages})
             .title('Info & Undersider')
@@ -149,5 +154,14 @@ export const myStructure = (S) =>
                 .title('Privacy Policy')
                 .child(S.document().schemaType('privacyPolicy').documentId('privacyPolicy')),
             ]),
+        ),
+        S.divider(),
+      S.listItem({icon: page})
+        .title('Ekstra Sider')
+        .child(
+          S.documentTypeList('subPage')
+            .title('Tilføj Underside')
+            .filter('_type == "subPage"')
+            .defaultOrdering([{field: 'title', direction: 'asc'}]),
         ),
     ])

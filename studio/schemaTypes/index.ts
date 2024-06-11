@@ -20,6 +20,7 @@ import {youTubeType} from './TextEditor/socialMedia/YouTube'
 import {tikTokType} from './TextEditor/socialMedia/TikTok'
 import {instagramType} from './TextEditor/socialMedia/Instagram'
 import {readMoreType} from './TextEditor/readMore'
+import subPage from './pages/subPage'
 
 export const schemaTypes = [
   blockContent,
@@ -33,6 +34,7 @@ export const schemaTypes = [
   instagramType,
   readMoreType,
   articleDetails,
+  subPage,
   aboutus,
   contactus,
   cookiepolicy,
