@@ -9,7 +9,7 @@ export default {
               name: 'title',
               title: 'Side Titel',
               type: 'string',
-              validation: Rule => Rule.required(),
+              validation: (Rule: any) => Rule.required()
          },
          {
               name: 'slug',
@@ -20,7 +20,7 @@ export default {
                    source: 'title',
                    maxLength: 150,
               },
-              validation: Rule => Rule.required(),
+              validation: (Rule: any) => Rule.required()
          },
          {
               name: 'overview',
