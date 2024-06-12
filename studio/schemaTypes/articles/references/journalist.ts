@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { MdGroup as icon } from 'react-icons/md'
+import ProfileCreator from '../../../components/infoBoxes/ProfileCreator'
 
 
 export default defineType({
@@ -8,6 +9,13 @@ export default defineType({
      type: 'document',
      icon,
      fields: [
+          defineField({
+               name: 'info',
+               type: 'string',
+               components: {
+                 input: ProfileCreator,
+               },   
+          }),
           defineField({
                name: 'name',
                title: 'Navn på journalisten',
@@ -29,15 +37,7 @@ export default defineType({
                     source: 'name',
                     maxLength: 150,
                },
-               validation: (Rule) => Rule.required().custom(slug => {
-                    if (!slug) return true; // Tillader tomme slugs, da der allerede er en 'required' regel
-                    const regex = /^[a-z0-9\-]+$/; // Tillader kun små bogstaver, tal og bindestreger
-                    if (slug.current && regex.test(slug.current)) { // Check if slug.current is defined before testing
-                         return true;
-                    } else {
-                         return 'Slug må kun indeholde små bogstaver, tal og bindestreger.';
-                    }
-               })
+               hidden: true,
           }),
           defineField({
                name: 'image',
@@ -55,19 +55,35 @@ export default defineType({
                description: 'Skriv en beskrivelse af dig selv',
           }),
           defineField({
+               name: 'contactEmail',
+               title: 'Email - bliver ikke offentliggjort (valgfrit)',
+               type: 'string',
+               description: 'Kun synligt for dine kolleger og administratorer',
+          }),
+          defineField({
                name: 'email',
                title: 'Email (valgfrit)',
                type: 'string',
-               description: 'Skriv din email i feltet nedenunder',
+               description: 'Sammenlignes med Sanity Email Validator',
+               readOnly: true,
+               hidden: true,
           }),
           defineField({
+               name: 'isPublished',
+               title: 'publiceret',
+               type: 'number',
+               initialValue: 0,
+               readOnly: true,
+               hidden: true,
+             }),
+          defineField({
                name: 'phone',
-               title: 'Telefonnummer (valgfrit)',
+               title: 'Telefonnummer - bliver ikke offentliggjort (valgfrit)',
                type: 'string',
-               description: 'Skriv dit telefonnummer i feltet nedenunder (valgfrit)',
+               description: 'Kun synligt for dine kolleger og administratorer',
           }),
      ],
      preview: {
-          select: { title: 'name', subtitle: 'email', media: 'image' },
+          select: { title: 'name', subtitle: 'contactEmail', media: 'image' },
      },
 });

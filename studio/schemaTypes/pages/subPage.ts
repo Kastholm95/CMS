@@ -20,7 +20,7 @@ export default {
                    source: 'title',
                    maxLength: 150,
               },
-              validation: (Rule: any) => Rule.required()
+              hidden: true,
          },
          {
               name: 'overview',

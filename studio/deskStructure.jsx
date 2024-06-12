@@ -75,7 +75,7 @@ export const myStructure = (S) =>
                         .params({tagId}),
                     ),
                 ),
-              /* S.listItem({icon: about})
+              S.listItem({icon: about})
                 .title('Journalist')
                 .child(
                   S.documentTypeList('journalist')
@@ -86,7 +86,7 @@ export const myStructure = (S) =>
                         .filter('_type == "article" && $authorId == details.journalist._ref')
                         .params({authorId}),
                     ),
-                ), */
+                ),
             ]),
         ),
       S.divider(),

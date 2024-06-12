@@ -17,6 +17,7 @@
   "dependencies": {
     "@imageshop-org/sanity-plugin-asset-source-imageshop": "^1.4.1",
     "@sanity/assist": "^2.0.4",
+    "@sanity/client": "^6.20.0",
     "@sanity/code-input": "^4.1.4",
     "@sanity/locale-da-dk": "^1.0.1",
     "@sanity/portable-text-editor": "^3.39.0",

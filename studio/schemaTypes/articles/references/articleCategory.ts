@@ -23,15 +23,7 @@ export default defineType({
            source: 'name',
            maxLength: 150,
       },
-      validation: (Rule) => Rule.required().custom(slug => {
-           if (!slug) return true; // Tillader tomme slugs, da der allerede er en 'required' regel
-           const regex = /^[a-z0-9\-]+$/; // Tillader kun små bogstaver, tal og bindestreger
-           if (regex.test(slug.current)) {
-                return true;
-           } else {
-                return 'Slug må kun indeholde små bogstaver, tal og bindestreger.';
-           }
-      })
+      hidden: true,
  }),
   ],
   preview: {

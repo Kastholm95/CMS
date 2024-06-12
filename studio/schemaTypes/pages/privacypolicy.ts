@@ -7,7 +7,8 @@ export default {
           {
                name: 'title',
                title: 'Side Titel',
-               type: 'string'
+               type: 'string',
+               validation: (Rule: any) => Rule.required()
           },
           {
                name: 'slug',
@@ -18,7 +19,7 @@ export default {
                     source: 'title',
                     maxLength: 150,
                },
-
+               hidden: true,
           },
           {
                name: 'overview',

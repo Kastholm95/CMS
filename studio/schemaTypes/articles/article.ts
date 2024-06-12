@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {IoNewspaperOutline as icon} from 'react-icons/io5'
-import RenderReadingTime from '../../components/RenderReadingTime'
+import AutoAssignJournalist from '../../components/AutoAssignJournalist'
+import MessageSanity from '../../components/infoBoxes/MessageSanity'
 
 /* import CustomEditor from '../wordCount/CustomEditor' */
 export default defineType({
@@ -16,6 +17,13 @@ export default defineType({
       initialValue: 0,
       readOnly: true,
       hidden: true,
+    }),
+    defineField({
+      name: 'message',
+      type: 'string',
+      components: {
+        input: MessageSanity,
+      },
     }),
     defineField({
       name: 'title',
@@ -40,6 +48,8 @@ export default defineType({
         source: 'title',
         maxLength: 150,
       },
+      hidden: true,
+      readOnly: true,
     }),
 
     defineField({
@@ -73,6 +83,14 @@ export default defineType({
       type: 'articleDetails',
     }),
     defineField({
+      name: 'category',
+      title: 'Artiklens kategori',
+      type: 'reference',
+      description: 'Tilføj kategori til artiklen, eller tilføj et nyt',
+      to: [{ type: 'category' }],
+      validation: (Rule) => Rule.required().error('Du skal vælge en kategori'),
+ }),
+    defineField({
       name: 'tag',
       title: 'Artiklens tags',
       type: 'array',
@@ -85,6 +103,8 @@ export default defineType({
       name: "reading",
       title: "Reading Time",
       type: "string",
+      readOnly: true,
+      hidden: true,
   }),
     defineField({
       name: 'disclaimer',
@@ -98,12 +118,12 @@ export default defineType({
       title: 'publiceret',
       type: 'number',
       initialValue: 0,
-      /* readOnly: true,
-      hidden: true, */
+      readOnly: true,
+      hidden: true,
     }),
     defineField({
       name: 'changePublishDate',
-      title: 'Skift artiklens publiceringsdato',
+      title: 'Opdater publiceringsdato',
       type: 'boolean',
       description: 'Publiceringsdatoen sættes automatisk til artiklens første publicering',
       initialValue: false,
@@ -116,6 +136,21 @@ export default defineType({
       initialValue: new Date().toISOString(),
       hidden: ({document}) => !document?.changePublishDate,
     }),
+    defineField({ 
+      name: 'updateJournalist',
+      title: 'Opdater journalisten',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Journalisten sættes automatisk ved første publicering til den bruger som er logget ind',
+    }),
+    defineField({
+      name: 'journalist',
+      title: 'Journalist af artiklen',
+      type: 'reference',
+      description: 'Vælg journalisten som har skrevet artiklen',
+      to: [{ type: 'journalist' }],
+      hidden: ({document}) => !document?.updateJournalist,
+ }),
   ],
   orderings: [
     {
