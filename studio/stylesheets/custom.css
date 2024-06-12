@@ -205,6 +205,17 @@ body > div:nth-child(5) > div:nth-child(2) > div.sc-kFCroH.biepLB.sc-fHejqy.fBJs
     display: none !important;
   } */
 
-  ul[aria-label="new-document.new-document"] > li:not(:has(> div > a[data-testid="create-new-tag"], [data-testid="create-new-category"], [data-testid="create-new-journalist"], [data-testid="create-new-article"])) {
+  ul[aria-label="new-document.new-document"] > li:not(:has([data-testid="create-new-tag"], [data-testid="create-new-category"], [data-testid="create-new-journalist"])) {
     display: none !important;
 }
+
+ul[aria-label="new-document.new-document"] > li {
+  display: none !important;
+}
+ul[aria-label="new-document.new-document"] > li:has([data-testid="create-new-article"]),
+ul[aria-label="new-document.new-document"] > li:has([data-testid="create-new-journalist"]),
+ul[aria-label="new-document.new-document"] > li:has([data-testid="create-new-tag"]),
+ul[aria-label="new-document.new-document"] > li:has([data-testid="create-new-category"]) {
+  display: block !important;
+}
+

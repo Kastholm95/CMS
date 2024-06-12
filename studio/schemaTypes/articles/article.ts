@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {IoNewspaperOutline as icon} from 'react-icons/io5'
+import RenderReadingTime from '../../components/RenderReadingTime'
 
 /* import CustomEditor from '../wordCount/CustomEditor' */
 export default defineType({
@@ -81,6 +82,11 @@ export default defineType({
         Rule.required().min(1).max(5).error('Du må vælge mindst 1 tag, og maksimalt 5 tags'),
     }),
     defineField({
+      name: "reading",
+      title: "Reading Time",
+      type: "string",
+  }),
+    defineField({
       name: 'disclaimer',
       title: 'Disclaimer',
       type: 'boolean',
@@ -92,8 +98,8 @@ export default defineType({
       title: 'publiceret',
       type: 'number',
       initialValue: 0,
-      readOnly: true,
-      hidden: true,
+      /* readOnly: true,
+      hidden: true, */
     }),
     defineField({
       name: 'changePublishDate',

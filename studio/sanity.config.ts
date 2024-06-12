@@ -34,7 +34,7 @@ export default defineConfig({
 
   plugins: [structureTool({
     structure: myStructure, defaultDocumentNode: defaultDocumentNodeResolver,
-  }), visionTool(), media(), assist(), daDKLocale(), unsplashImageAsset(), pexelsImageAsset({
+  }), media(), assist(), daDKLocale(), unsplashImageAsset(), pexelsImageAsset({
     API_KEY: 'ge1IUYa6cLyoBaDAXthpkVhf0UVm9ydomVM7DnSjnSkM4CAHT9EVbRd6',
   }), /* , imageShopAsset({}) */
   /* presentationTool({

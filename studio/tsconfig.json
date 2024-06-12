@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "schemaTypes/image/imageType.ts", "schemaTypes/image/components/ImageInput.tsx", "components/getCurrentUser.tsx", "deskStructure.jsx", "sanity.config.ts", "components/PageCountDisplay.jsx", "../app/components/Posts.tsx", "components/BlockContentCounter.jsx"],
+  "include": ["**/*.ts", "**/*.tsx", "schemaTypes/image/imageType.ts", "schemaTypes/image/components/ImageInput.tsx", "components/getCurrentUser.tsx", "deskStructure.jsx", "sanity.config.ts", "components/PageCountDisplay.jsx", "../app/components/Posts.tsx", "components/BlockContentCounter.jsx", "components/RenderReadingTime.jsx"],
   "exclude": ["node_modules"]
 }
