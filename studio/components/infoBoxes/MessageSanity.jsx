@@ -14,7 +14,7 @@ export default function MessageSanity() {
         }}>
           <h3>Nye Funktioner Implementeret </h3>
           <p>
-            Jeg har indført flere automatiske opdateringer for at forbedre din oplevelse:
+            Der er indført automatiske opdateringer for at forbedre oplevelsem:
           </p>
           <ul>
             <li><strong>Auto Oprettelse af Slugs:</strong> Slugs oprettes automatisk, når artikler publiceres første gang. Så i slipper for at klikke Generer</li>
