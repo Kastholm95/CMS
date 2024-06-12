@@ -33,7 +33,7 @@ export default {
                             type: 'array',
                             title: 'Links',
                             description: 'Vælg mellem kategorier eller tags for at inkludere som links under dette menupunkt.',
-                            of: [{ type: 'reference', to: [{ type: 'category'}, { type: 'tag'},  { type: 'aboutUs'}, {type: 'contactUs'}, {type: 'privacyPolicy'}, {type: 'cookiePolicy'} ] }],
+                            of: [{ type: 'reference', to: [{ type: 'category'}, { type: 'tag'}, {type: 'subPage'},  { type: 'aboutUs'}, {type: 'contactUs'}, {type: 'privacyPolicy'}, {type: 'cookiePolicy'} ] }],
                             validation: (Rule) => Rule.required().min(2).max(4).error('Vælg mindst 2 og højst 4 kategorier eller tags.')
                         }
                     ],

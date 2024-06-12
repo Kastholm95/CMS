@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {IoNewspaperOutline as icon} from 'react-icons/io5'
+import RenderReadingTime from '../../components/RenderReadingTime'
 
 /* import CustomEditor from '../wordCount/CustomEditor' */
 export default defineType({
@@ -81,6 +82,11 @@ export default defineType({
         Rule.required().min(1).max(5).error('Du må vælge mindst 1 tag, og maksimalt 5 tags'),
     }),
     defineField({
+      name: "reading",
+      title: "Reading Time",
+      type: "string",
+  }),
+    defineField({
       name: 'disclaimer',
       title: 'Disclaimer',
       type: 'boolean',
@@ -92,8 +98,8 @@ export default defineType({
       title: 'publiceret',
       type: 'number',
       initialValue: 0,
-      readOnly: true,
-      hidden: true,
+      /* readOnly: true,
+      hidden: true, */
     }),
     defineField({
       name: 'changePublishDate',
@@ -113,21 +119,21 @@ export default defineType({
   ],
   orderings: [
     {
-      title: 'Sidst Publiceret',
+      title: '| Sidst publiceret',
       name: 'publiceretDesc',
       by: [
-        {field: 'publishedAt', direction: 'asc'}
+        {field: 'publishedAt', direction: 'desc'}
       ]
     },
     {
-      title: 'Mest besøgte',
+      title: '| Fleste visninger',
       name: 'viewsDesc',
       by: [
         {field: 'views', direction: 'desc'}
       ]
     },
     {
-      title: 'Mindst besøgte',
+      title: '| Færreste visninger',
       name: 'viewsAsc',
       by: [
         {field: 'views', direction: 'asc'}
@@ -162,7 +168,7 @@ function calculateCharacterCount(blocks: any) {
   if (!blocks) return 0;
   return blocks.reduce((total: any, block: any) => {
     if (block._type === 'block' && block.children) {
-      return total + block.children.reduce((acc, child) => acc + (child.text ? child.text.length : 0), 0);
+      return total + block.children.reduce((acc: any, child: any) => acc + (child.text ? child.text.length : 0), 0);
     }
     return total;
   }, 0);
@@ -171,7 +177,7 @@ function calculateWordCount(blocks: any) {
   if (!blocks) return 0;
   return blocks.reduce((total: any, block: any) => {
     if (block._type === 'block' && block.children) {
-      return total + block.children.reduce((acc, child) => acc + (child.text ? child.text.split(/\s+/).filter(Boolean).length : 0), 0);
+      return total + block.children.reduce((acc: any, child: any) => acc + (child.text ? child.text.split(/\s+/).filter(Boolean).length : 0), 0);
     }
     return total;
   }, 0);

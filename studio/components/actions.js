@@ -1,15 +1,16 @@
 import {useState, useEffect} from 'react'
 import {useDocumentOperation} from 'sanity'
 import {EyeOpenIcon, EyeClosedIcon} from '@sanity/icons'
+import { useReadingTime } from "react-hook-reading-time";
 
 export function SetAndPublishAction(props) {
   const {patch, publish} = useDocumentOperation(props.id, props.type)
   const [isPublishing, setIsPublishing] = useState(false)
+  let readingTime = 0;
+ /*  console.log(props, 'props', props.draft, 'draft', props.published.overview, 'published'); */
   
 
   useEffect(() => {
-    // if the isPublishing state was set to true and the draft has changed
-    // to become `null` the document has been published
     if (isPublishing && !props.draft) {
       setIsPublishing(false)
     }
@@ -31,6 +32,28 @@ export function SetAndPublishAction(props) {
             {set: {isPublished: 1}}
           ]);
         } 
+
+        if(props.draft.isPublished === 0){
+          // Konstruerer en tekststreng fra 'overview' feltets blokke
+          const textContent = (props.draft.overview || [])
+            .filter(block => block._type === 'block')
+            .map(block => block.children.map(child => child.text).join(' '))
+            .join(' ');
+          
+          readingTime = useReadingTime(textContent).reading;
+
+        }else{
+          // Konstruerer en tekststreng fra 'overview' feltets blokke
+          const textContent = (props.published.overview || [])
+            .filter(block => block._type === 'block')
+            .map(block => block.children.map(child => child.text).join(' '))
+            .join(' ');
+          
+          readingTime = useReadingTime(textContent).reading;
+        }
+        patch.execute([
+          {set: {reading: readingTime}}
+        ]);
  
       // Perform the publish
       publish.execute()
@@ -40,11 +63,3 @@ export function SetAndPublishAction(props) {
     },
   }
 }
-
-export function HelloWorldBadge(props) {
-    return {
-      label: 'Hello world',
-      title: 'Hello I am a custom document badge',
-      color: "success"
-    }
-  } 
