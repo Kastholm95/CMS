@@ -2,6 +2,8 @@ import {defineField, defineType} from 'sanity'
 import {IoNewspaperOutline as icon} from 'react-icons/io5'
 import AutoAssignJournalist from '../../components/AutoAssignJournalist'
 import MessageSanity from '../../components/infoBoxes/MessageSanity'
+import {useFormValue} from 'sanity'
+import ArticleInfo from '../../components/infoBoxes/ArticleInfo'
 
 /* import CustomEditor from '../wordCount/CustomEditor' */
 export default defineType({
@@ -18,11 +20,19 @@ export default defineType({
       readOnly: true,
       hidden: true,
     }),
-    defineField({
+    /* defineField({
       name: 'message',
       type: 'string',
       components: {
         input: MessageSanity,
+      },
+    }), */
+    defineField({
+      name: 'articleInfo',
+      type: 'string',
+      description: '.',
+      components: {
+        input: ArticleInfo,
       },
     }),
     defineField({
@@ -180,9 +190,9 @@ export default defineType({
       title: 'title',
       date: 'releaseDate',
       media: 'metaImage',
-      journalistName: 'details.journalist.name',
+      journalistName: 'journalist.name',
       updatedDate: '_updatedAt',
-      category: 'details.category.name',
+      category: 'category.name',
       views: 'views',
       content: 'overview',
     },

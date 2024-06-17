@@ -7,7 +7,7 @@ import {BsCookie as cookie} from 'react-icons/bs'
 import {MdPrivacyTip as privacy} from 'react-icons/md'
 import {CiHashtag as hashtagg} from 'react-icons/ci'
 import {GrCircleInformation as info} from 'react-icons/gr'
-import {MdOutlineUnpublished as unpub} from 'react-icons/md'
+import {RiDraftLine as unpub} from 'react-icons/ri'
 import {SiPagespeedinsights as analytics} from 'react-icons/si'
 import {TbLayoutNavbarCollapseFilled as nav} from 'react-icons/tb'
 import {TbLayoutNavbarExpandFilled as footer} from 'react-icons/tb'
@@ -43,10 +43,10 @@ export const myStructure = (S) =>
             .title('Filters')
             .items([
               S.listItem({icon: unpub})
-                .title('Ikke-Publiceret Indhold')
+                .title('Kladder')
                 .child(
                   S.documentTypeList('article')
-                    .title('Ikke publiceret')
+                    .title('Ikke Publiceret/Redigeret')
                     .filter(
                       '_type == "article" && !defined(publishedAt) || isPublished == 0 || _id in path("drafts.**")',
                     ),
@@ -59,7 +59,7 @@ export const myStructure = (S) =>
                     .child((categoryId) =>
                       S.documentTypeList('article')
                         .title('Artikler')
-                        .filter('_type == "article" && $categoryId == details.category._ref')
+                        .filter('_type == "article" && $categoryId == category._ref')
                         .params({categoryId}),
                     ),
                 ),
@@ -71,7 +71,7 @@ export const myStructure = (S) =>
                     .child((tagId) =>
                       S.documentTypeList('article')
                         .title('Artikler')
-                        .filter('_type == "article" && $tagId in details.tag[0]._ref')
+                        .filter('_type == "article" && $tagId in tag[0]._ref')
                         .params({tagId}),
                     ),
                 ),
@@ -83,7 +83,7 @@ export const myStructure = (S) =>
                     .child((authorId) =>
                       S.documentTypeList('article')
                         .title('Artikler')
-                        .filter('_type == "article" && $authorId == details.journalist._ref')
+                        .filter('_type == "article" && $authorId == journalist._ref')
                         .params({authorId}),
                     ),
                 ),

@@ -219,3 +219,22 @@ ul[aria-label="new-document.new-document"] > li:has([data-testid="create-new-cat
   display: block !important;
 }
 
+
+
+/* Title */
+[data-ui="Heading"] {
+  font-size: 25px !important;
+}
+div:has([data-ui="Heading"]) {
+  margin-bottom: 0.5em;
+}
+div:has([data-ui="Heading"]) > [data-ui="Text"] {
+  display: none ;
+}
+
+div:has(.infoCards) [data-ui="fieldHeaderContentBox"] {
+/* display: none; */
+}
+[data-testid="field-articleInfo"] > div > [data-ui="fieldHeaderContentBox"] {
+  display: none;
+}
