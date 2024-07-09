@@ -6,7 +6,7 @@ import  { readMorePreview }  from './readMorePreview';
 export const readMoreType = defineType({
   name: 'readMore',
   type: 'object',
-  title: 'Læs mere',
+  title: 'Manuel - Læs mere',
   icon: icon,
   fields: [
     defineField({

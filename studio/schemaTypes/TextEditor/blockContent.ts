@@ -10,11 +10,14 @@ export default defineType({
                type: 'block'
           }),
           defineArrayMember({
-               type: 'imageWithMetadata',
-               options: { hotspot: true, requiredFields: ['title', 'description'] },
+               type: 'readMoreAutomatic'
           }),
           defineArrayMember({
                type: 'readMore'
+          }),
+          defineArrayMember({
+               type: 'imageWithMetadata',
+               options: { hotspot: true, requiredFields: ['title', 'description'] },
           }),
           defineArrayMember({
                type: 'faceBook'
