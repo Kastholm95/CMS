@@ -40,6 +40,9 @@ export default defineType({
       title: 'Titel på artikel',
       type: 'string',
       description: 'Skriv titlen på artiklen her',
+      options: {
+        search: { weight: 10 },
+      },
       validation: (Rule) =>
         Rule.custom((name) => {
           if (!name || name.trim() === '') {
@@ -77,15 +80,15 @@ export default defineType({
       title: 'Teaser',
       type: 'string',
       description: 'Skriv en kort teaser til artiklen',
-      /* components: {
-        input: InputCounter,
-      } */
     }),
     defineField({
       name: 'overview',
       title: `Artiklens tekst indhold`,
       type: 'blockContent',
       description: 'Skriv artiklens indhold',
+      options: {
+        search: { weight: 0 },
+      },
     }),
     defineField({
       name: 'details',

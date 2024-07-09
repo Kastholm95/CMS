@@ -31,8 +31,6 @@ export default defineType({
     }),
 
 
-    
-    
     defineField({
       type: 'imageWithMetadata',
       name: 'metaImage',
