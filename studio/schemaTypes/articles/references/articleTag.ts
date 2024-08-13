@@ -27,6 +27,7 @@ export default defineType({
       hidden: true,
  }),
   ],
+  __experimental_omnisearch_visibility: false,
   preview: {
     select: {
       title: 'name',

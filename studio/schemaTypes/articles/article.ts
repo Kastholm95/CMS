@@ -120,13 +120,6 @@ export default defineType({
       hidden: true,
   }),
     defineField({
-      name: 'disclaimer',
-      title: 'Disclaimer',
-      type: 'boolean',
-      description: 'Tilføj en disclaimer til artiklen',
-      initialValue: true,
-    }),
-    defineField({
       name: 'isPublished',
       title: 'publiceret',
       type: 'number',
@@ -136,18 +129,25 @@ export default defineType({
     }),
     defineField({
       name: 'changePublishDate',
-      title: 'Opdater publiceringsdato',
+      title: 'Planglæg artiklens Publiceringsdato',
       type: 'boolean',
-      description: 'Publiceringsdatoen sættes automatisk til artiklens første publicering',
+      description: "Ønsker du at planlægge en fremtidig publicering eller fremhæve en artikel på hjemmesiden? Kan du ændre datoen her. Som standard bliver publiceringsdatoen automatisk sat til den dato, hvor artiklen først blev udgivet - medmindre du tilretter det her.",
       initialValue: false,
     }),
     defineField({
       name: 'publishedAt',
-      title: 'Første publicering',
+      title: 'Artiklens publicering',
       type: 'datetime',
-      description: 'Dato for første publicering',
+      description: 'Dato for publicering',
       initialValue: new Date().toISOString(),
       hidden: ({document}) => !document?.changePublishDate,
+    }),
+    defineField({
+      name: 'previewMode',
+      title: 'Preview Mode',
+      type: 'boolean',
+      description: "Ønsker du at se artiklen i preview mode inden den udgives live? Aktiver denne og se artiklen på admin siden. Når du er klar til at publicere, kan du deaktivere preview mode og publicere artiklen - tilret evt. publiceringsdatoen så den passer med det præcise udgivelsestidspunkt.",
+      initialValue: false,
     }),
     defineField({ 
       name: 'updateJournalist',
@@ -164,6 +164,13 @@ export default defineType({
       to: [{ type: 'journalist' }],
       hidden: ({document}) => !document?.updateJournalist,
  }),
+ defineField({
+  name: 'disclaimer',
+  title: 'Disclaimer',
+  type: 'boolean',
+  description: 'Tilføj en disclaimer til artiklen',
+  initialValue: true,
+}),
   ],
   orderings: [
     {

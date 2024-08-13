@@ -38,6 +38,7 @@ export function SetAndPublishAction(props) {
   const isJournalistType = props.draft?._type === 'journalist' || props.published?._type === 'journalist';
   const neverPublished = props.draft?.isPublished === 0;
   const hasBeenPublished = props.draft?.isPublished === 1;
+  const scheduledPublish = props.draft?.changePublishDate === true || props.published?.changePublishDate === true;
   const currentUser = useCurrentUser();
   const toast = useToast();
 
@@ -99,8 +100,10 @@ export function SetAndPublishAction(props) {
             toast.push({status: 'error', title: 'Du er ikke en gyldig journalist', description: 'Opret en profil i "Referencer" mappen', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'critical'});
             return
           }
+          if (!scheduledPublish) {
+            patch.execute([{set: {publishedAt: new Date().toISOString()}}]);
+        }
           patch.execute([
-            {set: {publishedAt: new Date().toISOString()}},
             {set: {isPublished: 1}},
             {set: {reading: readingTime}},
             {set: {journalist: {_type: 'reference', _ref: journalistId}}}
@@ -112,7 +115,6 @@ export function SetAndPublishAction(props) {
           toast.push({status: 'success', title: 'Artiklen er nu opdateret', description: `${currentUser.email} har opdateret artiklen`, closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
         }
       }
-
 
       //General execure for all children
       patch.execute([

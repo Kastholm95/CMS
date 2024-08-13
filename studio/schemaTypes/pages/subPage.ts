@@ -28,5 +28,6 @@ export default {
               type: 'blockContent',
               description: 'Skriv artiklens indhold',
          },
-    ]
+    ],
+    __experimental_omnisearch_visibility: false,
 }

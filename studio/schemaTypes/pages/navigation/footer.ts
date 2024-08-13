@@ -55,5 +55,6 @@ export default {
             ],
             validation: (Rule) => Rule.required().min(1).error('Der skal være mindst ét menupunkt.'),
         }),
-    ]
+    ],
+    __experimental_omnisearch_visibility: false,
 }

@@ -40,5 +40,6 @@ export default {
             type: 'boolean',
             description: 'Aktiver for at vise "Forside" som det første element i navigationsmenuen på dit website.',
         }),
-    ]
+    ],
+    __experimental_omnisearch_visibility: false,
 }

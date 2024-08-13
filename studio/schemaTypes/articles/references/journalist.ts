@@ -83,6 +83,7 @@ export default defineType({
                description: 'Kun synligt for dine kolleger og administratorer',
           }),
      ],
+     __experimental_omnisearch_visibility: false,
      preview: {
           select: { title: 'name', subtitle: 'contactEmail', media: 'image' },
      },

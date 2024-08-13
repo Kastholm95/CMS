@@ -15,6 +15,10 @@ import { unsplashAssetSource } from 'sanity-plugin-asset-source-unsplash'
 import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels'
 import { presentationTool } from 'sanity/presentation'
 import {SetAndPublishAction} from './components/actions'
+import searchConfig from './components/searchConfig'
+import { dashboardTool, sanityTutorialsWidget,
+  projectUsersWidget,
+  projectInfoWidget } from '@sanity/dashboard'
 
 /* const {theme} = (await import(
   // @ts-expect-error -- TODO setup themer.d.ts to get correct typings
@@ -33,8 +37,8 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [structureTool({
-    structure: myStructure, defaultDocumentNode: defaultDocumentNodeResolver,
-  }), media(), assist(), daDKLocale(), unsplashImageAsset(), pexelsImageAsset({
+    structure: myStructure, defaultDocumentNode: defaultDocumentNodeResolver, searchConfig,
+  }), media(), daDKLocale(), unsplashImageAsset(), pexelsImageAsset({
     API_KEY: 'ge1IUYa6cLyoBaDAXthpkVhf0UVm9ydomVM7DnSjnSkM4CAHT9EVbRd6',
   }), /* , imageShopAsset({}) */
   /* presentationTool({

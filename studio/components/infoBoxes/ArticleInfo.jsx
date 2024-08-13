@@ -23,6 +23,7 @@ function ArticleInfo() {
     const journalist = useFormValue(['journalist', '_ref']);
     const publishedAt = useFormValue(['publishedAt']);
     const isPublished = useFormValue(['isPublished']);
+    const previewMode = useFormValue(['previewMode']);
     const views = useFormValue(['views']);
     const readingTime = useFormValue(['reading']);
 
@@ -98,17 +99,31 @@ function ArticleInfo() {
   
 
     // Håndter udgivelsesstatus
-    const publishStatus = isPublished ? 'Publiceret' : 'Ikke publiceret';
-
+    const publishStatus = isPublished ? 'Publiceringsdato' : 'Ikke publiceret';
 
     const data = [
-      { title: "Status", value: isPublished ? 'Publiceret' : 'Ikke Publiceret', Icon: isPublished ? FaCheckCircle : FaTimesCircle, color: isPublished ? 'green' : 'red' },
-      { title: "Publiceret", value: publishedAt ? new Date(publishedAt).toLocaleDateString("en-US") : 'Ikke Publiceret', Icon: FaCalendarAlt, color: '#2a2a2a' },
-      { title: "Kategori", value: categoryName, Icon: FaRegNewspaper, color: '#2a2a2a' },
-      { title: "Journalist", value: journalistName, Icon: FaUserTie, color: '#2a2a2a' },
-      { title: "Besøg", value: views || '0', Icon: FaEye, color: '#2a2a2a' },
-      { title: "Læsetid", value: readingTime ? `${readingTime} min` : 'Unknown', Icon: FaClock, color: '#2a2a2a' }
-    ];
+      {
+        title: 'Status',
+        value: previewMode ? 'Preview' : isPublished ? 'Publiceret' : 'Ikke Publiceret',
+        Icon: previewMode ? FaEye : isPublished ? FaCheckCircle : FaTimesCircle,
+        color: previewMode ? 'orange' : isPublished ? 'green' : 'red',
+      },
+      {
+        title: 'Publicering',
+        value: publishedAt ? new Date(publishedAt).toLocaleDateString('en-US') : 'Ikke Publiceret',
+        Icon: FaCalendarAlt,
+        color: '#2a2a2a',
+      },
+      {title: 'Kategori', value: categoryName, Icon: FaRegNewspaper, color: '#2a2a2a'},
+      {title: 'Journalist', value: journalistName, Icon: FaUserTie, color: '#2a2a2a'},
+      {title: 'Besøg', value: views || '0', Icon: FaEye, color: '#2a2a2a'},
+      {
+        title: 'Læsetid',
+        value: readingTime ? `${readingTime} min` : 'Unknown',
+        Icon: FaClock,
+        color: '#2a2a2a',
+      },
+    ]
 
     return (
       <div className='infoCards' style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
