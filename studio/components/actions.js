@@ -38,6 +38,7 @@ export function SetAndPublishAction(props) {
   const isJournalistType = props.draft?._type === 'journalist' || props.published?._type === 'journalist';
   const neverPublished = props.draft?.isPublished === 0;
   const hasBeenPublished = props.draft?.isPublished === 1;
+  const articleMonth = props.draft?.publishMonth;
   const scheduledPublish = props.draft?.changePublishDate === true || props.published?.changePublishDate === true;
   const currentUser = useCurrentUser();
   const toast = useToast();
@@ -102,16 +103,17 @@ export function SetAndPublishAction(props) {
           }
           if (!scheduledPublish) {
             patch.execute([{set: {publishedAt: new Date().toISOString()}}]);
-        }
+          }
           patch.execute([
             {set: {isPublished: 1}},
             {set: {reading: readingTime}},
-            {set: {journalist: {_type: 'reference', _ref: journalistId}}}
+            {set: {journalist: {_type: 'reference', _ref: journalistId}}},
+            {set: {publishMonth: new Date(props.draft?.publishedAt || props.published?.publishedAt).getMonth() + 1}},
           ])
           toast.push({status: 'success', title: 'Artiklen er nu publiceret', description: `${currentUser.email} har udgivet artiklen`, closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
         }
         if(hasBeenPublished) {
-          patch.execute([{set: {reading: readingTime}}])
+          patch.execute([{set: {reading: readingTime}}, {set: {publishMonth: new Date(props.draft?.publishedAt || props.published?.publishedAt).getMonth() + 1}}])
           toast.push({status: 'success', title: 'Artiklen er nu opdateret', description: `${currentUser.email} har opdateret artiklen`, closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
         }
       }

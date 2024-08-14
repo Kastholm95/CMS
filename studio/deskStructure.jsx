@@ -28,6 +28,12 @@ export const defaultDocumentNodeResolver = (S, {documentId, schemaType}) => {
     return S.document().views([S.view.form(), S.view.component(JsonPreview).title('JSON')])
   }
 }
+const today = new Date();
+const months = [
+  'Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 
+  'Juli', 'August', 'September', 'Oktober', 'November', 'December'
+];
+
 
 export const myStructure = (S) =>
   S.list()
@@ -36,21 +42,65 @@ export const myStructure = (S) =>
       S.listItem({icon: article})
         .title('Alle Artikler')
         .child(S.documentTypeList('article').title('Alle Artikler').filter('_type == "article"')),
-      S.listItem({icon: article})
-        .title('Filtrer Artikler')
+        S.listItem({icon: article})
+        .title('Planlagte Artikler')
         .child(
           S.list()
-            .title('Filters')
-            .items([
-              S.listItem({icon: unpub})
-                .title('Kladder')
-                .child(
-                  S.documentTypeList('article')
-                    .title('Ikke Publiceret/Redigeret')
-                    .filter(
-                      '_type == "article" && !defined(publishedAt) || isPublished == 0 || _id in path("drafts.**")',
-                    ),
-                ),
+            .title('Måneder')
+            .items(
+              months.map((month, index) => {
+                
+                const monthNumber = index + 1;
+
+                return S.listItem()
+                  .title(month)
+                  .child(
+                    S.documentTypeList('article')
+                      .title(`Artikler i ${month}`)
+                      .filter(`
+                        _type == "article" && 
+                        publishedAt >= "${today.toISOString()}" &&
+                        publishMonth == ${monthNumber}
+                      `)
+                  );
+              })
+            )
+        ),
+      S.listItem({icon: article})
+      .title('Filtrer Artikler')
+      .child(
+        S.list()
+          .title('Filters')
+          .items([
+            S.listItem({icon: unpub})
+              .title('Kladder')
+              .child(
+                S.list()
+                  .title('Kladder2')
+                  .items([
+                    S.listItem({icon: unpub})
+                      .title('Aldrig Publiceret')
+                      .child(
+                        S.documentList()
+                          .title('Aldrig Publiceret')
+                          .filter('_type == "article" && isPublished == 0')
+                      ),
+                      S.listItem({icon: unpub})
+                      .title('Artikler i Draft Mode')
+                      .child(
+                        S.documentList()
+                          .title('Artikler med ændringer')
+                          .filter('_type == "article" && (_id in path("drafts.**"))')
+                      ),
+                      S.listItem({icon: unpub})
+                      .title('Artikler i Preview Mode')
+                      .child(
+                        S.documentList()
+                          .title('Artikler i Preview Mode')
+                          .filter('_type == "article" && previewMode == true')
+                      ),
+                  ])
+              ),
               S.listItem({icon: hashtagg})
                 .title('Kategori')
                 .child(

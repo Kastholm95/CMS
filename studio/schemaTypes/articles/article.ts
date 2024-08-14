@@ -143,6 +143,14 @@ export default defineType({
       hidden: ({document}) => !document?.changePublishDate,
     }),
     defineField({
+      name: 'publishMonth',
+      title: 'Artiklens publiceringsmåned',
+      type: 'number',
+      initialValue: 0,
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
       name: 'previewMode',
       title: 'Preview Mode',
       type: 'boolean',
@@ -198,22 +206,45 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
-      date: 'releaseDate',
+      articleId: '_id',
       media: 'metaImage',
       journalistName: 'journalist.name',
       updatedDate: '_updatedAt',
       category: 'category.name',
       views: 'views',
       content: 'overview',
+      preview: 'previewMode',
+      status: 'isPublished',
+      date: 'publishedAt'
     },
     prepare(selection) {
       const {title, views, journalistName, category, content} = selection;
       const characterCount = calculateCharacterCount(content);
       const wordCount = calculateWordCount(content);
+      const articleDate = new Date(selection.date);
+      const formattedDate = articleDate.toLocaleDateString('da-DK', {
+        year: '2-digit',
+        month: 'numeric',
+        day: 'numeric'
+      });
+      const formattedTime = articleDate.toLocaleTimeString('da-DK', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+
+      let articleStatus = '';
+      if (selection.preview || selection.articleId.includes('drafts.')) { 
+        articleStatus = '🟠'; 
+      } else {
+        articleStatus = selection.status === 1 ? '🟢' : '🔴'; 
+      }
+      
+      const firstname = journalistName?.split(' ')[0];
       
       return {
         title: `${title}`,
-        subtitle: `${views}👀| ${wordCount}📝| ${journalistName}`,
+        subtitle: `${articleStatus} | ${views}👀| ${wordCount}📝| ${firstname}🧑‍🦲 | ${formattedDate} 📆 | ${formattedTime} 🕒`,
         media: selection.media,
       }
     },

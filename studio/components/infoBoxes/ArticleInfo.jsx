@@ -19,6 +19,7 @@ export const client = createClient({
 function ArticleInfo() {
     const tagsArray = useFormValue(['tags', '_ref']);
     const title = useFormValue(['title']);
+    const id = useFormValue(['_id']);
     const category = useFormValue(['category', '_ref']);
     const journalist = useFormValue(['journalist', '_ref']);
     const publishedAt = useFormValue(['publishedAt']);
@@ -104,13 +105,13 @@ function ArticleInfo() {
     const data = [
       {
         title: 'Status',
-        value: previewMode ? 'Preview' : isPublished ? 'Publiceret' : 'Ikke Publiceret',
+        value: id.includes('drafts.') ? 'Draft mode' : previewMode ? 'Preview mode' : isPublished ? 'Publiceret' : 'Ikke Publiceret',
         Icon: previewMode ? FaEye : isPublished ? FaCheckCircle : FaTimesCircle,
-        color: previewMode ? 'orange' : isPublished ? 'green' : 'red',
+        color: previewMode || id.includes('drafts.') ? 'orange' : isPublished ? 'green' : 'red',
       },
       {
         title: 'Publicering',
-        value: publishedAt ? new Date(publishedAt).toLocaleDateString('en-US') : 'Ikke Publiceret',
+        value: publishedAt ? formattedDate : 'Ikke Publiceret',
         Icon: FaCalendarAlt,
         color: '#2a2a2a',
       },
