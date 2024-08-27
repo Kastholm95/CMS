@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import {EyeOpenIcon, EyeClosedIcon} from '@sanity/icons'
 import { useDocumentOperation, useCurrentUser } from 'sanity';
 import { createClient } from '@sanity/client';
-import {Button, useToast} from '@sanity/ui'
+import {useToast} from '@sanity/ui'
 
 // Opsætning af Sanity klient
 const client = createClient({
@@ -10,6 +10,7 @@ const client = createClient({
   dataset: 'production',                           
   useCdn: false,                                   
 });
+
 
 // Funktion til at beregne læsetiden baseret på antallet af ord
 function calculateReadingTime(text) {
@@ -31,12 +32,13 @@ function slugify(text) {
 
 
 export function SetAndPublishAction(props) {
+
   const {patch, publish} = useDocumentOperation(props.id, props.type)
   const [isPublishing, setIsPublishing] = useState(false)
   const isArticleType = props.draft?._type === 'article' || props.published?._type === 'article';
   const isJournalistType = props.draft?._type === 'journalist' || props.published?._type === 'journalist';
-  const neverPublished = props.draft?.isPublished === 0;
-  const hasBeenPublished = props.draft?.isPublished === 1;
+  const articleNeverPublished = props.draft?.isPublished === 0;
+  const articleHasBeenPublished = props.draft?.isPublished === 1;
   const articleMonth = props.draft?.publishMonth;
   const scheduledPublish = props.draft?.changePublishDate === true || props.published?.changePublishDate === true;
   const republishArticle = props.draft?.republishArticle === true || props.published?.republishArticle === true;
@@ -89,7 +91,7 @@ export function SetAndPublishAction(props) {
       const createSlug = slugify(props.draft?.title || props.draft?.name);
 
 
-      if (isJournalistType && neverPublished) { 
+      if (isJournalistType && articleNeverPublished) { 
         patch.execute([
           {set: {isPublished: 1}},
           {set: {email: currentUser.email}},
@@ -98,7 +100,8 @@ export function SetAndPublishAction(props) {
       }
 
       if (isArticleType) {
-        if(neverPublished) {
+
+        if(articleNeverPublished) {
           if (!journalistId) {
             console.error('No journalist found');
             toast.push({status: 'error', title: 'Du er ikke en gyldig journalist', description: 'Opret en profil i "Referencer" mappen', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'critical'});
@@ -115,24 +118,18 @@ export function SetAndPublishAction(props) {
           ])
           toast.push({status: 'success', title: 'Artiklen er nu publiceret', description: `${currentUser.email} har udgivet artiklen`, closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
         }
-        if(hasBeenPublished) {
+
+        if(articleHasBeenPublished) {
           if(newSlug === originalSlug) { 
-            toast.push({status: 'error', title: 'Din nye slug er ens med det originale', description: 'Rediger dit slug så det differencierer fra det originale', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'critical'});
+            toast.push({status: 'error', title: 'Din nye slug er ikke gyldig eller er ens med det originale', description: 'Rediger dit slug så det differencierer fra det originale', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'critical'});
             return
+          }
+          if (republishArticle && newSlug !== originalSlug) { 
+            toast.push({status: 'success', title: 'Artiklen er sat til genudgivelse', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
           }
           patch.execute([{set: {reading: readingTime}}, {set: {publishMonth: new Date(props.draft?.publishedAt || props.published?.publishedAt).getMonth() + 1}}])
           toast.push({status: 'success', title: 'Artiklen er nu opdateret', description: `${currentUser.email} har opdateret artiklen`, closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
         }
-      }
-
-      // Send webhook hvis artiklen er blevet genudgivet
-      if (republishArticle && newSlug !== originalSlug) {
-        await handleWebhook({
-          title: props.draft?.title || props.published?.title,
-          slug: originalSlug,
-          newSlug: newSlug,
-          /* isRepublished: isRepublished++, */
-        });
       }
 
       //General execure for all children
