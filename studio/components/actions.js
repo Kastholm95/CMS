@@ -11,7 +11,6 @@ const client = createClient({
   useCdn: false,                                   
 });
 
-
 // Funktion til at beregne læsetiden baseret på antallet af ord
 function calculateReadingTime(text) {
   const wordsPerMinute = 200; // Gennemsnitlig læsehastighed
@@ -40,6 +39,9 @@ export function SetAndPublishAction(props) {
   const hasBeenPublished = props.draft?.isPublished === 1;
   const articleMonth = props.draft?.publishMonth;
   const scheduledPublish = props.draft?.changePublishDate === true || props.published?.changePublishDate === true;
+  const republishArticle = props.draft?.republishArticle === true || props.published?.republishArticle === true;
+  const originalSlug = props.published?.slug?.current || props.draft?.slug?.current;
+  const newSlug = props.published?.newslug?.current || props.draft?.newslug?.current;
   const currentUser = useCurrentUser();
   const toast = useToast();
 
@@ -65,6 +67,7 @@ export function SetAndPublishAction(props) {
       console.error('Error fetching journalist', error);
     }
   };
+  
 
   return {
     disabled: publish.disabled,
@@ -83,7 +86,7 @@ export function SetAndPublishAction(props) {
       // Calculate reading time
       const readingTime = calculateReadingTime(textContent);
 
-      const newSlug = slugify(props.draft?.title || props.draft?.name);
+      const createSlug = slugify(props.draft?.title || props.draft?.name);
 
 
       if (isJournalistType && neverPublished) { 
@@ -113,16 +116,30 @@ export function SetAndPublishAction(props) {
           toast.push({status: 'success', title: 'Artiklen er nu publiceret', description: `${currentUser.email} har udgivet artiklen`, closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
         }
         if(hasBeenPublished) {
+          if(newSlug === originalSlug) { 
+            toast.push({status: 'error', title: 'Din nye slug er ens med det originale', description: 'Rediger dit slug så det differencierer fra det originale', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'critical'});
+            return
+          }
           patch.execute([{set: {reading: readingTime}}, {set: {publishMonth: new Date(props.draft?.publishedAt || props.published?.publishedAt).getMonth() + 1}}])
           toast.push({status: 'success', title: 'Artiklen er nu opdateret', description: `${currentUser.email} har opdateret artiklen`, closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
         }
       }
 
+      // Send webhook hvis artiklen er blevet genudgivet
+      if (republishArticle && newSlug !== originalSlug) {
+        await handleWebhook({
+          title: props.draft?.title || props.published?.title,
+          slug: originalSlug,
+          newSlug: newSlug,
+          /* isRepublished: isRepublished++, */
+        });
+      }
+
       //General execure for all children
       patch.execute([
-        {setIfMissing: {slug: {current: newSlug}}}, // Set slug if it is missing
+        {setIfMissing: {slug: {current: createSlug}}}, // Set slug if it is missing
         {unset: ['slug.current']}, // Unset existing slug first
-        {set: {slug: {current: newSlug}}}, // Set new slug
+        {set: {slug: {current: createSlug}}}, // Set new slug
       ]);
 
 

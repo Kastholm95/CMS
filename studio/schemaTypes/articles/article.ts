@@ -51,7 +51,7 @@ export default defineType({
           return true
         }),
     }),
-    defineField({
+    /* defineField({
       name: 'slug',
       title: 'Generer et slug',
       type: 'slug',
@@ -63,7 +63,7 @@ export default defineType({
       },
       hidden: true,
       readOnly: true,
-    }),
+    }), */
 
     defineField({
       type: 'imageWithMetadata',
@@ -143,6 +143,40 @@ export default defineType({
       hidden: ({document}) => !document?.changePublishDate,
     }),
     defineField({
+      name: 'republishArticle',
+      title: 'Republish artikel',
+      type: 'boolean',
+      description: "Ønsker du at planlægge en fremtidig publicering eller fremhæve en artikel på hjemmesiden? Kan du ændre datoen her. Som standard bliver publiceringsdatoen automatisk sat til den dato, hvor artiklen først blev udgivet - medmindre du tilretter det her.",
+      initialValue: false,
+      hidden: ({document}) => !document?.changePublishDate || document?.isPublished === 0,
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Originale slug',
+      type: 'slug',
+      description:
+        'Her ses det originale slug, sørg for at det nye slug differenciere fra dette.',
+      options: {
+        source: 'title',
+        maxLength: 150,
+      },
+      hidden: ({document}) => !document?.republishArticle,
+      readOnly: true,
+    }),
+    defineField({
+      name: 'newSlug',
+      title: 'Generer et nyt slug',
+      type: 'slug',
+      description:
+        'Klik på "Generate" for at generere et nyt slug ud fra titlen på artiklen - Dette bruges til at generere en ny URL til artiklen.',
+      options: {
+        source: 'title',
+        maxLength: 150,
+      },
+      hidden: ({document}) => !document?.republishArticle,
+      readOnly: false,
+    }),
+    defineField({
       name: 'publishMonth',
       title: 'Artiklens publiceringsmåned',
       type: 'number',
@@ -163,6 +197,7 @@ export default defineType({
       type: 'boolean',
       initialValue: false,
       description: 'Journalisten sættes automatisk ved første publicering til den bruger som er logget ind',
+      hidden: ({document}) => !document?.journalist
     }),
     defineField({
       name: 'journalist',
