@@ -1,7 +1,7 @@
 import { defineType, defineField } from 'sanity'
 import { FacebookPreview } from './FacebookPreview'
 import { FaFacebook as icon } from "react-icons/fa";
-import IframeWrapper from '../IframeWrapper';
+import IframeWrapper from '../../iFrame/IframeWrapper';
 
 export const faceBookType = defineType({
   name: 'faceBook',

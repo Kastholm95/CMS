@@ -16,6 +16,9 @@ export default defineType({
                type: 'readMore'
           }),
           defineArrayMember({
+               type: 'iFrame'
+          }),
+          defineArrayMember({
                type: 'imageWithMetadata',
                options: { hotspot: true, requiredFields: ['title', 'description'] },
           }),
@@ -31,9 +34,6 @@ export default defineType({
           defineArrayMember({
                type: 'instagram'
           }),
-
-
-
      ],
      styles: [
           { title: 'Normal', type: 'string', value: 'normal' },

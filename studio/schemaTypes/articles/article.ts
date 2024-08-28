@@ -1,8 +1,5 @@
 import {defineField, defineType} from 'sanity'
 import {IoNewspaperOutline as icon} from 'react-icons/io5'
-import AutoAssignJournalist from '../../components/AutoAssignJournalist'
-import MessageSanity from '../../components/infoBoxes/MessageSanity'
-import {useFormValue} from 'sanity'
 import ArticleInfo from '../../components/infoBoxes/ArticleInfo'
 
 /* import CustomEditor from '../wordCount/CustomEditor' */
@@ -176,6 +173,14 @@ export default defineType({
       hidden: ({document}) => !document?.republishArticle,
       readOnly: false,
     }),
+    {
+      name: 'oldSlugs',
+      title: 'Old Slugs',
+      type: 'array',
+      of: [{ type: 'string' }],
+      hidden: true,
+    },
+
     defineField({
       name: 'publishMonth',
       title: 'Artiklens publiceringsmåned',
@@ -183,6 +188,37 @@ export default defineType({
       initialValue: 0,
       readOnly: true,
       hidden: true,
+    }),
+    defineField({
+      name: 'facebookFields',
+      title: 'Rediger Opengraph Facebook',
+      type: 'boolean',
+      description:
+        'Hvis ikke redigeret, bruges standard dataen fra artiklen. Heriblandt titel, teaser, billede og kilde. (Anbefalet)',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'facebookTitle',
+      title: 'Ændre titel på Facebook opslag - (Valgfrit)',
+      type: 'string',
+      description:
+        'Ændrer Meta titlen, efterlad tom for at bruge standard titlen fra artiklen.',
+      hidden: ({document}) => !document?.facebookFields,
+    }),
+    defineField({
+      name: 'facebookDescription',
+      title: 'Ændre teaser på Facebook opslag - (Valgfrit)',
+      type: 'text',
+      description:
+        'Ændrer Meta beskrivelsen, efterlad tom for at bruge standard teaser fra artiklen.',
+      hidden: ({document}) => !document?.facebookFields,
+    }),
+    defineField({
+      type: 'imageWithMetadata',
+      name: 'facebookImage',
+      title: 'Billede & metadata',
+      description:
+        'Tilføj et billede, som repræsenterer artiklen på Facebook. - Efterlad tom for at bruge standard billedet fra artiklen.',
     }),
     defineField({
       name: 'previewMode',

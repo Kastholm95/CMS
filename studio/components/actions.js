@@ -43,7 +43,8 @@ export function SetAndPublishAction(props) {
   const scheduledPublish = props.draft?.changePublishDate === true || props.published?.changePublishDate === true;
   const republishArticle = props.draft?.republishArticle === true || props.published?.republishArticle === true;
   const originalSlug = props.published?.slug?.current || props.draft?.slug?.current;
-  const newSlug = props.published?.newslug?.current || props.draft?.newslug?.current;
+  const newSlug = props.published?.newSlug?.current || props.draft?.newSlug?.current;
+  const oldSlugs = props.published?.oldSlugs || props.draft?.oldSlugs;
   const currentUser = useCurrentUser();
   const toast = useToast();
 
@@ -120,11 +121,24 @@ export function SetAndPublishAction(props) {
         }
 
         if(articleHasBeenPublished) {
-          if(newSlug === originalSlug) { 
-            toast.push({status: 'error', title: 'Din nye slug er ikke gyldig eller er ens med det originale', description: 'Rediger dit slug så det differencierer fra det originale', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'critical'});
+          if(newSlug === originalSlug || newSlug === '' || newSlug === null) { 
+            console.log('Slug is the same', newSlug, originalSlug);
+            toast.push({status: 'error', title: 'Din nye slug er ikke gyldig eller er ens med et gammel slug', description: 'Rediger dit slug så det differencierer fra gamle slugs', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'critical'});
             return
           }
           if (republishArticle && newSlug !== originalSlug) { 
+            if (newSlug) {
+              patch.execute([
+                {
+                  set: {
+                    oldSlugs: [
+                      ...(oldSlugs || []),
+                      newSlug, 
+                    ],
+                  }
+                }
+              ]);
+            }
             toast.push({status: 'success', title: 'Artiklen er sat til genudgivelse', closable: true, duration: 40000, icon: EyeClosedIcon, tone: 'positive'});
           }
           patch.execute([{set: {reading: readingTime}}, {set: {publishMonth: new Date(props.draft?.publishedAt || props.published?.publishedAt).getMonth() + 1}}])
@@ -136,7 +150,7 @@ export function SetAndPublishAction(props) {
       patch.execute([
         {setIfMissing: {slug: {current: createSlug}}}, // Set slug if it is missing
         {unset: ['slug.current']}, // Unset existing slug first
-        {set: {slug: {current: createSlug}}}, // Set new slug
+        {set: {slug: {current: originalSlug}}}, // Set new slug
       ]);
 
 

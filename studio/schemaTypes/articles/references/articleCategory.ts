@@ -9,7 +9,7 @@ export default defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Artikel kategori',
+      title: 'Kategori Titel',
       description: 'Skriv en kategori til artiklen',
       type: 'string',
        validation: (Rule) => Rule.required(),
@@ -25,6 +25,12 @@ export default defineType({
       },
       hidden: true,
  }),
+ defineField({ 
+  name: 'categoryDescription',
+  title: 'Kategori Beskrivelse',
+  type: 'text',
+  description: 'Beskriv kategorien så Google og andre søgemaskiner kan forstå hvad kategorien handler om',
+}),
   ],
   __experimental_omnisearch_visibility: false,
   preview: {

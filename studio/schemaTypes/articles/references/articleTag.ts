@@ -10,7 +10,7 @@ export default defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Artikel tag',
+      title: 'Tag Titel',
       description: 'Skriv et tag til artiklen',
       type: 'string',
        validation: (Rule) => Rule.required(),
@@ -25,6 +25,12 @@ export default defineType({
            maxLength: 150,
       },
       hidden: true,
+ }),
+ defineField({ 
+    name: 'tagDescription',
+    title: 'Tag Beskrivelse',
+    type: 'text',
+    description: 'Beskriv tagget så Google og andre søgemaskiner kan forstå hvad tagget handler om',
  }),
   ],
   __experimental_omnisearch_visibility: false,

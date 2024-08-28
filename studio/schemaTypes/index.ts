@@ -21,6 +21,7 @@ import {tikTokType} from './TextEditor/socialMedia/TikTok'
 import {instagramType} from './TextEditor/socialMedia/Instagram'
 import {readMoreType} from './TextEditor/readMore'
 import {readMoreAutomaticType } from './TextEditor/readMoreAutomatic'
+import { iframeType } from './TextEditor/iFrame'
 import subPage from './pages/subPage'
 
 export const schemaTypes = [
@@ -29,6 +30,7 @@ export const schemaTypes = [
   articleCategory,
   articleTag,
   journalist,
+  iframeType,
   faceBookType,
   youTubeType,
   tikTokType,
