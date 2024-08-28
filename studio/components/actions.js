@@ -101,7 +101,6 @@ export function SetAndPublishAction(props) {
       }
 
       if (isArticleType) {
-
         if(articleNeverPublished) {
           if (!journalistId) {
             console.error('No journalist found');
@@ -150,7 +149,7 @@ export function SetAndPublishAction(props) {
       patch.execute([
         {setIfMissing: {slug: {current: createSlug}}}, // Set slug if it is missing
         {unset: ['slug.current']}, // Unset existing slug first
-        {set: {slug: {current: originalSlug}}}, // Set new slug
+        {set: {slug: {current: createSlug}}}, // Set new slug
       ]);
 
 

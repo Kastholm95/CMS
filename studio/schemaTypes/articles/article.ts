@@ -219,6 +219,7 @@ export default defineType({
       title: 'Billede & metadata',
       description:
         'Tilføj et billede, som repræsenterer artiklen på Facebook. - Efterlad tom for at bruge standard billedet fra artiklen.',
+        hidden: ({document}) => !document?.facebookFields,
     }),
     defineField({
       name: 'previewMode',
