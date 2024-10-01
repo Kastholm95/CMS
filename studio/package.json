@@ -28,6 +28,7 @@
     "@sanity/vision": "^3.33.0",
     "@sanity/visual-editing": "^1.8.14",
     "blurhash": "^2.0.5",
+    "fs": "^0.0.1-security",
     "next-sanity": "^9.0.8",
     "node-fetch": "^3.3.2",
     "react": "^18.2.0",

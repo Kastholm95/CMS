@@ -1,4 +1,4 @@
-import {Button, Card, Dialog, Flex, Label, Stack, TextInput, useToast} from '@sanity/ui'
+import {Button, Card, Dialog, Flex, Box, Label, Stack, TextInput, useToast} from '@sanity/ui'
 import {ComponentType, useCallback, useEffect, useState} from 'react'
 import {useClient} from 'sanity'
 import {Subscription} from 'rxjs'
@@ -17,21 +17,10 @@ const ImageInput = (props) => {
 
   const fields = [
     {
-      name: 'title',
-      title: 'Titel',
-      description: 'Skriv en kort titel til billedet og gør det let at finde til senere brug.',
-      required: true,
-    },
-    {
       name: 'description',
       title: 'Kilde',
       description: 'Angiv kilden til billedet.',
       required: true,
-    },
-    {
-      name: 'altText',
-      title: 'Alt Tekst',
-      description: 'Efterlad blank for at bruge artikel slug (Anbefalet)',
     },
   ]
 
@@ -44,12 +33,7 @@ const ImageInput = (props) => {
 
   const [validationStatus, setValidationStatus] = useState(fieldsToValidate)
 
-  /** The ID of the selected image
-   *  To get rid of TS errors (if you are using Typescript), we need to add a new type `MetadataImage` which extends `Image`
-   *  see {@link https://gist.github.com/bobinska-dev/103e589ffc254a3b13f3965423f41fed#file-types-ts}
-   */
 
-  /** State to store the image metadata */
   const [sanityImage, setSanityImage] = useState({})
 
   /** Dialog (dialog-image-defaults) */
@@ -103,6 +87,9 @@ const ImageInput = (props) => {
 
       try {
         const res = await client.fetch(query, params)
+        if (!res.description) {
+          res.description = 'Shutterstock.com'
+        }
         setSanityImage(res)
         updateValidationStatus(res)
       } catch (err) {
@@ -130,9 +117,6 @@ const ImageInput = (props) => {
       <Card paddingBottom={4} key={field.name}>
         <label>
           <Stack space={3}>
-            <Label size={4}>
-              {field.title}
-            </Label>
             <Label>
               {field.description}
             </Label>
@@ -143,6 +127,7 @@ const ImageInput = (props) => {
               placeholder={field.title}
               value={sanityImage ? sanityImage[field.name] : ''}
               required={field.required}
+              defaultValue={'Shutterstock.com'}
             />
           </Stack>
         </label>
@@ -156,71 +141,33 @@ const ImageInput = (props) => {
        */}
       {props.renderDefault(props)}
 
-      {/* * * METADATA PREVIEW DISPLAYED UNDERNEATH INPUT * * *
-       */}
-      {sanityImage && (
-        <Stack marginTop={1} space={1} paddingBottom={0}>
-          <Metadata title="Titel" value={sanityImage?.title} />
-          <Metadata title="Billed kilde" value={sanityImage?.description} />
-          <Metadata title="Alt tekst" value={sanityImage?.altText} />
-        </Stack>
-      )}
+        <div
+     header="Skift billede metadata"
+     id="dialog-image-defaults"
+     onClose={onClose}
+     zOffset={1000}
+     width={2}
+    >
+  <Card padding={5}>
+    <Box ddisplay="grid" gridTemplateColumns="1fr 1fr" alignItems="center" gap={3}>
+      {inputs}
+      <Button
+        mode="default"
+        onClick={() =>
+          handleGlobalMetadataConfirm({
+            sanityImage,
+            toast,
+            client,
+            onClose,
+          })
+        }
+        text="Gem ændringer"
+        disabled={!Object.values(validationStatus).every((isValid) => isValid)}
+      />
+    </Box>
+  </Card>
+</div>
 
-      <Stack paddingY={2}>
-        {/* * * BUTTON TO OPEN EDIT MODAL * * *
-         */}
-        <Flex paddingY={3}>
-          <Button
-            mode="default"
-            text="Skift metadata"
-            onClick={onOpen}
-            disabled={imageId ? false : true}
-            fontSize={[1.2, 1.2, 1.2]}
-            icon={ImageIcon}
-            style={{
-              cursor: 'pointer',
-            }}
-          />
-        </Flex>
-      </Stack>
-
-      {/* * * METADATA INPUT MODAL * *
-       */}
-      {open && (
-        <Dialog
-          header="Skift billede metadata"
-          id="dialog-image-defaults"
-          onClose={onClose}
-          zOffset={1000}
-          width={2}
-        >
-          <Card padding={5}>
-            <Stack space={3}>
-              {/*
-               * * * INPUT FIELDS * * *
-               */}
-              {inputs}
-
-              {/*
-               * * * SUBMIT BUTTON * * *
-               */}
-              <Button
-                mode="ghost"
-                onClick={() =>
-                  handleGlobalMetadataConfirm({
-                    sanityImage,
-                    toast,
-                    client,
-                    onClose,
-                  })
-                }
-                text="Gem ændringer"
-                disabled={!Object.values(validationStatus).every((isValid) => isValid)}
-              />
-            </Stack>
-          </Card>
-        </Dialog>
-      )}
     </div>
   )
 }

@@ -89,7 +89,7 @@ export function SetAndPublishAction(props) {
       // Calculate reading time
       const readingTime = calculateReadingTime(textContent);
 
-      const createSlug = slugify(props.draft?.title || props.draft?.name);
+      
 
 
       if (isJournalistType && articleNeverPublished) { 
@@ -145,13 +145,18 @@ export function SetAndPublishAction(props) {
         }
       }
 
-      //General execure for all children
-      patch.execute([
-        {setIfMissing: {slug: {current: createSlug}}}, // Set slug if it is missing
-        {unset: ['slug.current']}, // Unset existing slug first
-        {set: {slug: {current: createSlug}}}, // Set new slug
-      ]);
+      const existingSlug = props.draft?.slug?.current || props.published?.slug?.current;
 
+    // Only create slug if none exists and if the child has a title or name
+     const createSlug = existingSlug 
+      ? null 
+      : slugify(props.draft?.title || props.draft?.name || '');
+      //General execure for all children
+      if (createSlug) {
+        patch.execute([
+          {setIfMissing: {slug: {current: createSlug}}}, // Set slug only if missing
+        ]);
+      }
 
       // Signal that the action is completed
       props.onComplete()

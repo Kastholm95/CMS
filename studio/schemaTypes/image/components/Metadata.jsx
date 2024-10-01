@@ -16,7 +16,7 @@ const Metadata = ({ title, value }) => {
   return (
     <ElegantBox>
       <Text weight="bold" muted size={2}>
-        {title}:
+        {title}: test
       </Text>
       <Text size={1} muted>
         {value ? `${value.substring(0, 80)}${value.length < 80 ? '' : '...'}` : 'Undefined'}

@@ -24,14 +24,14 @@ export default defineType({
         input: MessageSanity,
       },
     }), */
-    defineField({
+    /* defineField({
       name: 'articleInfo',
       type: 'string',
       description: '.',
       components: {
         input: ArticleInfo,
       },
-    }),
+    }), */
     defineField({
       name: 'title',
       title: 'Titel på artikel',
@@ -69,7 +69,7 @@ export default defineType({
       description:
         'Tilføj et nyt billede, som repræsenterer artiklen. Billedet bruges til at repræsentere artiklen på forsiden og på sociale medier. Du kan uploade, copy paste, vælge forhenværende billede, eller klikke på "Vælg" og bruge en indbygget version af Pexels eller Unsplash',
       options: {
-        requiredFields: ['title', 'description'],
+        requiredFields: ['description'],
       },
     }),
     defineField({
