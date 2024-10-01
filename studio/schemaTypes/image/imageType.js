@@ -29,13 +29,10 @@ export const imageType = defineType({
      * you should change `true` to "Image is required"
      * or another error message
      */
-    if (!value) return "Image is required"
+    
 
     /** Get global metadata for set image asset */
-    const imageMeta = await client.fetch(
-      '*[_id == $id][0]{description, altText, title}',
-      { id: value?.asset?._ref }
-    )
+    
 
     /** Check if all required fields are set */
    /*  const requiredFields = context.type.options.requiredFields

@@ -107,7 +107,7 @@ export default defineType({
       description: 'Tilføj tag/tags til artiklen',
       of: [{type: 'reference', to: [{type: 'tag'}]}],
       validation: (Rule) =>
-        Rule.required().min(1).max(5).error('Du må vælge mindst 1 tag, og maksimalt 5 tags'),
+        Rule.required().min(1).max(10).error('Du må vælge mindst 1 tag, og maksimalt 10 tags'),
     }),
     defineField({
       name: "reading",
