@@ -12,6 +12,7 @@ import {SiPagespeedinsights as analytics} from 'react-icons/si'
 import {TbLayoutNavbarCollapseFilled as nav} from 'react-icons/tb'
 import {TbLayoutNavbarExpandFilled as footer} from 'react-icons/tb'
 import { MdOutlineFindInPage as page } from "react-icons/md";
+import { SlFeed as msnFeed} from "react-icons/sl";
 // ./deskStructure.js
 const JsonPreview = ({document}) => (
   <>
@@ -53,10 +54,10 @@ export const myStructure = (S) =>
                 const monthNumber = index + 1;
 
                 return S.listItem()
-                  .title(month)
+                  .title(`${month} | ${today.getFullYear()} |`)
                   .child(
                     S.documentTypeList('article')
-                      .title(`Artikler i ${month}`)
+                      .title(`Artikler i ${month} ${today.getFullYear()}`)
                       .filter(`
                         _type == "article" && 
                         publishedAt >= "${today.toISOString()}" &&
@@ -212,6 +213,15 @@ export const myStructure = (S) =>
           S.documentTypeList('subPage')
             .title('Tilføj Underside')
             .filter('_type == "subPage"')
+            .defaultOrdering([{field: 'title', direction: 'asc'}]),
+        ),
+        S.divider(),
+      S.listItem({icon: msnFeed})
+        .title('MSN Scroll Feeds')
+        .child(
+          S.documentTypeList('msnScrollFeed')
+            .title('Tilføj Feed')
+            .filter('_type == "msnScrollFeed"')
             .defaultOrdering([{field: 'title', direction: 'asc'}]),
         ),
     ])

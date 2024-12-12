@@ -24,6 +24,7 @@ import {readMoreAutomaticType } from './TextEditor/readMoreAutomatic'
 import { iframeType } from './TextEditor/iFrame'
 import subPage from './pages/subPage'
 import { customCodeType } from './TextEditor/customCode'
+import msnScrollFeed from './pages/meta/msnScrollFeed'
 
 export const schemaTypes = [
   blockContent,
@@ -41,6 +42,7 @@ export const schemaTypes = [
   readMoreAutomaticType,
   articleDetails,
   subPage,
+  msnScrollFeed,
   aboutus,
   contactus,
   cookiepolicy,
