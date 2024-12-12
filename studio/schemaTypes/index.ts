@@ -23,6 +23,7 @@ import {readMoreType} from './TextEditor/readMore'
 import {readMoreAutomaticType } from './TextEditor/readMoreAutomatic'
 import { iframeType } from './TextEditor/iFrame'
 import subPage from './pages/subPage'
+import { customCodeType } from './TextEditor/customCode'
 
 export const schemaTypes = [
   blockContent,
@@ -31,6 +32,7 @@ export const schemaTypes = [
   articleTag,
   journalist,
   iframeType,
+  customCodeType,
   faceBookType,
   youTubeType,
   tikTokType,

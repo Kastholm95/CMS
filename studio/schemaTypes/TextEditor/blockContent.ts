@@ -19,6 +19,9 @@ export default defineType({
                type: 'iFrame'
           }),
           defineArrayMember({
+               type: 'customCode'
+          }),
+          defineArrayMember({
                type: 'imageWithMetadata',
                options: { hotspot: true, requiredFields: ['title', 'description'] },
           }),
