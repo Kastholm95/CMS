@@ -1,7 +1,4 @@
 import React from "react";
-import { validation } from "sanity";
-import { set, unset } from 'sanity'
-import { FeedUrlInput } from "../../../components/msnFeedUrl/FeedUrlInput";
 
 export default {
     name: 'msnScrollFeed',
