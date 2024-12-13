@@ -24,6 +24,13 @@ export default {
             validation: (Rule: any) => Rule.required()
          },
          {
+               name: 'journalist',
+               title: 'Journalist af artiklen',
+               type: 'reference',
+               description: 'Vælg journalisten som har skrevet artiklen',
+               to: [{ type: 'journalist' }],
+          },
+         {
             name: 'articles',
             title: 'Tilføj artikler',
             type: 'array',
@@ -33,7 +40,7 @@ export default {
          },
          {
             name: 'slug',
-            title: 'Feed url - oprettes automatisk',
+            title: 'Guide url - oprettes automatisk',
             type: 'slug',
             options: {
               source: 'title',
@@ -45,7 +52,7 @@ export default {
                 return React.createElement(
                   'div',
                   { style: { display: 'flex', alignItems: 'center' } },
-                  'https://pengehjoernet.dk/msnfeed/',
+                  'https://pengehjoernet.dk/guide/',
                   props.renderDefault(props)
                 )
               }
