@@ -1,10 +1,21 @@
 import React from 'react'
+import {defineField, defineType} from 'sanity'
+import {IoNewspaperOutline as icon} from 'react-icons/io5'
+import ArticleInfo from '../../../components/infoBoxes/ArticleInfo'
 
 export default {
   name: 'msnScrollFeed',
   title: 'Feeds',
   type: 'document',
   fields: [
+    {
+      name: 'views',
+      title: 'Page View Counter (Beta)',
+      type: 'number',
+      initialValue: 0,
+      readOnly: true,
+      hidden: true,
+    },
     {
       name: 'title',
       title: 'Feed Titel',
@@ -145,6 +156,14 @@ export default {
       name: 'isPublished',
       title: 'publiceret',
       type: 'number',
+      initialValue: 1,
+      readOnly: true,
+      hidden: true,
+    },
+    {
+      name: 'publishMonth',
+      title: 'Artiklens publiceringsmåned',
+      type: 'number',
       initialValue: 0,
       readOnly: true,
       hidden: true,
@@ -153,13 +172,44 @@ export default {
   preview: {
     select: {
       title: 'title',
+      articleId: '_id',
       media: 'metaImage',
+      journalistName: 'journalist.name',
+      updatedDate: '_updatedAt',
+      category: 'category.name',
+      views: 'views',
+      content: 'overview',
+      preview: 'previewMode',
+      status: 'isPublished',
+      date: 'publishedAt'
     },
     prepare(selection: any) {
-      const {title, media} = selection
+      const {title, views, journalistName, category, content} = selection;
+      const articleDate = new Date(selection.date);
+      const formattedDate = articleDate.toLocaleDateString('da-DK', {
+        year: '2-digit',
+        month: 'numeric',
+        day: 'numeric'
+      });
+      const formattedTime = articleDate.toLocaleTimeString('da-DK', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+
+      let articleStatus = '';
+      if (selection.preview || selection.articleId.includes('drafts.')) { 
+        articleStatus = '🟠'; 
+      } else {
+        articleStatus = selection.status === 1 ? '🟢' : '🔴'; 
+      }
+      
+      const firstname = journalistName?.split(' ')[0];
+      
       return {
-        title: title || 'Ingen titel',
-        media: media,
+        title: `${title}`,
+        subtitle: `${articleStatus} | ${views}👀| ${firstname}🧑‍🦲 | ${formattedDate} 📆 | ${formattedTime} 🕒`,
+        media: selection.media,
       }
     },
   },
