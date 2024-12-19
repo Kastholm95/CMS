@@ -190,20 +190,6 @@ export default defineType({
       hidden: true,
     }),
     defineField({
-      name: 'msnFeedDescription',
-      title: 'Beskrivelse til MSN Feed',
-      type: 'boolean',
-      description: "",
-      initialValue: false,
-    }),
-    defineField({
-      name: 'msnDescription',
-      title: 'MSN Feed beskrivelse',
-      type: 'text',
-      description: 'Skriv teksten her som skal indgå i artiklens feed beskrivelse',
-      hidden: ({document}) => !document?.msnFeedDescription,
-    }),
-    defineField({
       name: 'facebookFields',
       title: 'Rediger Opengraph Facebook',
       type: 'boolean',
